@@ -7,5 +7,10 @@ module.exports.productService = {
     if (!result.length) return null;
     return result;
   },
+  // ::DOING adicionar a função getProducts
+  getProducts: async () => {
+    const result = await productModel.getProducts();
+    if (!result.length) return null;
+    return result;
+  },
 };
-// ::TODO adicionar a função getProducts
