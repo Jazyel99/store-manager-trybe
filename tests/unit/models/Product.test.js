@@ -23,11 +23,11 @@ const expectedProducts = [
 
 // ::TODO teste da camda models
 describe('Testes da camada models', () => {
+  afterEach(function () {
+    Sinon.restore();
+  });
   // ::TODO testes bemsucedidos
   describe('Testes bemsucedidos', () => {
-    afterEach(function () {
-      Sinon.restore();
-    });
     // ::DONE testes da função getProductByID
     describe('Teste da função getProductByID', () => {
       // ::DONE testar se a função retorna um objeto
@@ -72,6 +72,7 @@ describe('Testes da camada models', () => {
         expect(product).to.be.equal(expectedProducts);
       });
     });
+    // TODO test da função addProduct
   })
   // ::TODO testes malsucedidos
   describe('Testes malsucedidos', () => {
@@ -88,6 +89,8 @@ describe('Testes da camada models', () => {
     // ::DONE tetes da função getProducts
     describe('Teste da função getProducts', () => { 
       it('Deve testar se o retorno é undefined', async () => {
+        Sinon.stub(connection, 'execute').resolves([]);
+
         const product = await productModel.getProducts();
         expect(product).to.be.undefined;
       });
