@@ -9,7 +9,19 @@ const expectedProduct = {
   name: 'Martelo de Thor'
 };
 
-// ::DOING teste da camda models
+const expectedProducts = [
+  {
+    id: 1,
+    name: "Martelo de Thor",
+  },
+  {
+    id: 2,
+    name: "Traje de encolhimento",
+  }
+];
+
+
+// ::TODO teste da camda models
 describe('Testes da camada models', () => {
   // ::TODO testes bemsucedidos
   describe('Testes bemsucedidos', () => {
@@ -43,7 +55,23 @@ describe('Testes da camada models', () => {
         expect(product).to.deep.equal(expectedProduct);
       });
     });
-    // ::TODO tetes da função getProducts
+    // ::DONE tetes da função getProducts
+    describe('Teste da função getProducts', () => {
+      it(`Deve retorna uma lista não vazia`, async () => {
+        
+        Sinon.stub(connection, 'execute').resolves([expectedProducts]);
+
+        const product = await productModel.getProducts();
+        expect(product).to.be.an('array').that.not.empty;
+      });
+      it(`Deve retorna uma lista de produtos`, async () => {
+
+        Sinon.stub(connection, 'execute').resolves([expectedProducts]);
+
+        const product = await productModel.getProducts();
+        expect(product).to.be.equal(expectedProducts);
+      });
+    });
   })
   // ::TODO testes malsucedidos
   describe('Testes malsucedidos', () => {
@@ -57,6 +85,12 @@ describe('Testes da camada models', () => {
         expect(product).to.be.undefined;
       });
     });
-    // ::TODO tetes da função getProducts
+    // ::DONE tetes da função getProducts
+    describe('Teste da função getProducts', () => { 
+      it('Deve testar se o retorno é undefined', async () => {
+        const product = await productModel.getProducts();
+        expect(product).to.be.undefined;
+      });
+    })
   });
 });
