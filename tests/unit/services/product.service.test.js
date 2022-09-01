@@ -11,6 +11,17 @@ const expectedProduct = {
 
 };
 
+const expectedProducts = [
+  {
+    id: 1,
+    name: "Martelo de Thor",
+  },
+  {
+    id: 2,
+    name: "Traje de encolhimento",
+  }
+];
+
 // ::TODO teste da camada services
 describe('Testes da camada services', () => {
   // ::TODO testes bemsucedidos
@@ -46,6 +57,20 @@ describe('Testes da camada services', () => {
       });
     });
     // ::TODO tetes da função getProducts
+    describe('Teste da função getProducts', () => {
+      // ::DONE testa se o retorno é um array não vazio
+      it('Deve retorna um array não vázio', async () => {
+        Sinon.stub(productModel, 'getProducts').resolves(expectedProducts);
+        const result = await productService.getProducts();
+        expect(result).to.be.an('array').that.not.empty;
+      });
+      // ::DONE testa se é igualde dos elementos no array
+      it('Deve retornar o array com os produtos', async () => {
+        Sinon.stub(productModel, 'getProducts').resolves(expectedProducts);
+        const result = await productService.getProducts();
+        expect(result).to.be.equal(expectedProducts);
+      });
+    })
   })
   // ::TODO testes malsucedidos
   describe('Testes malsucedidos', () => {
@@ -61,5 +86,15 @@ describe('Testes da camada services', () => {
       });
     });
     // ::TODO tetes da função getProducts
+    describe('Teste da função getProducts', () => {
+      // ::DONE testa se o retorno é null
+      it('Deve testar se o retorno null', async () => {
+        Sinon.stub(productModel, 'getProducts').resolves([]);
+
+        const result = await productService.getProducts();
+
+        expect(result).to.be.equal(null);
+      });
+    });
   });
 });
