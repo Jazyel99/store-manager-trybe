@@ -10,6 +10,17 @@ const expectedProduct = {
 
 };
 
+const expectedProducts = [
+  {
+    id: 1,
+    name: "Martelo de Thor",
+  },
+  {
+    id: 2,
+    name: "Traje de encolhimento",
+  }
+];
+
 // ::TODO teste da camada ccontrollers
 describe('Testes da camada controllers', () => {
   // ::TODO testes bemsucedidos
@@ -18,9 +29,9 @@ describe('Testes da camada controllers', () => {
       Sinon.restore();
     });
 
-    // ::DOING testes da função getProductByID
+    // ::DONE testes da função getProductByID
     describe('Teste da função getProductByID', () => {
-      // ::DOING testa se status retornado é igual a 200
+      // ::DONE testa se status retornado é igual a 200
       it(`Deve retornar o status 200`, async () => {
         const request = { params: { id: 1 } };
         const response = {};
@@ -40,20 +51,47 @@ describe('Testes da camada controllers', () => {
 
         response.status = Sinon.stub().returns(response);
         response.json = Sinon.stub().returns();
-        const resultExecute = [expectedProduct];
 
         await productController.getProductByID(request, response);
 
         expect(response.json.calledWith([expectedProduct])).to.be.true;
       });
     });
-    // ::TODO tetes da função getProducts
+    // ::DONE tetes da função getProducts
+    describe('Teste da função getProducts', () => {
+      // ::DONE testa se o retorno é 200
+      it('Deve retornar status 200', async () => {
+        const request = {};
+        const response = {};
+
+        response.status = Sinon.stub().returns(response);
+        response.json = Sinon.stub().returns();
+        Sinon.stub(productService, 'getProducts').resolves(expectedProducts);
+
+        await productController.getProducts(request, response);
+
+        expect(response.status.calledWith(200)).to.be.true;
+      });
+      it('Deve restonar uma lista de produtos', async () => {
+        const request = {};
+        const response = {};
+
+        response.status = Sinon.stub().returns(response);
+        response.json = Sinon.stub().returns();
+        Sinon.stub(productService, 'getProducts').resolves(expectedProducts);
+
+        await productController.getProducts(request, response);
+
+        expect(response.json.calledWith(expectedProducts)).to.be.true;
+
+      });
+    })
   })
   // ::TODO testes malsucedidos
   describe('Testes malsucedidos', () => {
-    // ::TODO testes da função getProductByID
+    // ::DONE testes da função getProductByID
     describe('Teste da função getProductByID', () => {
-      // ::TODO o status deve ser 404
+      // ::DONE o status deve ser 404
       it('Deve retonar status 404', async () => {
         const request = { params: { id: 100 } };
         const response = {};
@@ -80,5 +118,33 @@ describe('Testes da camada controllers', () => {
       });
     });
     // ::TODO tetes da função getProducts
+    describe('Teste da função getProducts', () => {
+      it('Deve retonar status 404', async () => {
+        const request = {};
+        const response = {};
+
+        response.status = Sinon.stub().returns(response);
+        response.json = Sinon.stub().returns();
+
+        Sinon.stub(productService, 'getProducts').resolves(null);
+
+        await productController.getProducts(request, response);
+
+        expect(response.status.calledWith(404)).to.be.true;
+      });
+
+      it('Deve retonar a mensagem "Product not found"', async () => {
+        const request = {};
+        const response = {};
+
+        response.status = Sinon.stub().returns(response);
+        response.json = Sinon.stub().returns();
+
+        await productController.getProducts(request, response);
+
+        expect(response.json.calledWith({ message: 'Product not found' })).to.be.true;
+      });
+    });
+    
   });
 });
