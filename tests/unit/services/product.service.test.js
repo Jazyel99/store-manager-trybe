@@ -70,8 +70,16 @@ describe('Testes da camada services', () => {
         const result = await productService.getProducts();
         expect(result).to.be.equal(expectedProducts);
       });
-    })
-  })
+    });
+    // ::TODO teste da função deleteProduct
+    describe('Teste da função deleteProduct', () => {
+      it('Deve retornar o valor 204', async () => {
+        Sinon.stub(productModel, 'deleteProduct').resolves(1);
+        const result = await productService.deleteProduct(1);
+        expect(result).to.be.equal(204);
+      });
+    });
+  });
   // ::TODO testes malsucedidos
   describe('Testes malsucedidos', () => {
     // ::DONE testes da função getProductByID
@@ -96,5 +104,12 @@ describe('Testes da camada services', () => {
         expect(result).to.be.equal(null);
       });
     });
+    describe('Teste da função deleteProduct', () => {
+      it('Deve retornar null caso o produto não exista', async () => {
+        Sinon.stub(productModel, 'deleteProduct').resolves(0);
+        const result = await productService.deleteProduct(1);
+        expect(result).to.be.equal(null);
+      });
+    })
   });
 });
