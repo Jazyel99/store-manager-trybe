@@ -13,9 +13,12 @@ app.get('/', (_request, response) => {
 app.use('/products', productRouter);
 app.use('/sales', saleRouter);
 
-app.use((err, req, res, _next) => {
-  const { code, message } = err;
-  res.status(code).json({ message });
+app.use((err, _req, res, _next) => {
+  if (err.code) {
+    return res.status(err.code).json({ message: err.message });
+  }
+
+  res.status(500).json({ message: 'Server error!' });
 });
 
 // não remova essa exportação, é para o avaliador funcionar
