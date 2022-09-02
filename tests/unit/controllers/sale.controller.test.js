@@ -73,7 +73,23 @@ describe('Testes da camada controllers [Sales]', () => {
 
         expect(response.status.calledWith(200)).to.be.true;
       });
-    })
+    });
+    describe('Teste da função deleteSale', () => {
+      it('Deve retornar o status 204 seja encontrado', async () => {
+        const request = { params: { id: 1 } };
+        const response = {};
+
+        response.status = Sinon.stub().returns(response);
+        response.json = Sinon.stub().returns();
+        response.send = Sinon.stub().returns();
+
+        Sinon.stub(saleService, 'deleteSale').resolves(204);
+
+        await saleController.deleteSale(request, response);
+
+        expect(response.status.calledWith(204)).to.be.true;
+      });
+    });
   })
   // ::TODO testes malsucedidos
   describe('Testes malsucedidos', () => {
@@ -134,6 +150,20 @@ describe('Testes da camada controllers [Sales]', () => {
         await saleController.getSales(request, response);
 
         expect(response.json.calledWith({ message: 'Sale not found' })).to.be.true;
+      });
+    });
+    describe('Teste da função deleteSale', () => {
+      it('Deve retornar o status 404 caso a venada não seja encontrado', async () => {
+        const request = { params: { id: 100 } };
+        const response = {};
+
+        response.status = Sinon.stub().returns(response);
+        response.json = Sinon.stub().returns();
+        Sinon.stub(saleService, 'deleteSale').resolves(null);
+
+        await saleController.deleteSale(request, response);
+
+        expect(response.status.calledWith(404)).to.be.true;
       });
     });
   });
