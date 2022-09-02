@@ -20,7 +20,6 @@ const expectedProducts = [
   }
 ];
 
-
 // ::TODO teste da camda models
 describe('Testes da camada models', () => {
   afterEach(function () {
@@ -58,7 +57,7 @@ describe('Testes da camada models', () => {
     // ::DONE tetes da função getProducts
     describe('Teste da função getProducts', () => {
       it(`Deve retorna uma lista não vazia`, async () => {
-        
+
         Sinon.stub(connection, 'execute').resolves([expectedProducts]);
 
         const product = await productModel.getProducts();
@@ -72,7 +71,15 @@ describe('Testes da camada models', () => {
         expect(product).to.be.equal(expectedProducts);
       });
     });
-    // TODO test da função addProduct
+    // ::TODO test da função addProduct
+    // ::TODO teste da função deleteProduct
+    describe('Teste da função deleteProduct', () => {
+      it('Deve retornar 1 como quantidade de coluna afetada', async () => {
+        Sinon.stub(connection, 'execute').resolves([{affectedRows: 1}]);
+        const result = await productModel.deleteProduct(1);
+        expect(result).to.be.equal(1);
+      });
+    });
   })
   // ::TODO testes malsucedidos
   describe('Testes malsucedidos', () => {
@@ -87,13 +94,20 @@ describe('Testes da camada models', () => {
       });
     });
     // ::DONE tetes da função getProducts
-    describe('Teste da função getProducts', () => { 
+    describe('Teste da função getProducts', () => {
       it('Deve testar se o retorno é undefined', async () => {
         Sinon.stub(connection, 'execute').resolves([]);
 
         const product = await productModel.getProducts();
         expect(product).to.be.undefined;
       });
-    })
+    });
+    describe('Teste da função deleteProduct', () => {
+      it('Deve retornar 0 quando o produto não encontrado', async () => {
+        Sinon.stub(connection, 'execute').resolves([{ affectedRows: 0 }]);
+        const result = await productModel.deleteProduct(100);
+        expect(result).to.be.equal(0);
+      });
+    });
   });
 });
