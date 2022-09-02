@@ -18,4 +18,8 @@ module.exports.productService = {
     if (result === 0) return null;
     return 204;
   },
+  addProduct: async (productName) => {
+    const result = await productModel.addProduct(productName);
+    return result;
+  },
 };
