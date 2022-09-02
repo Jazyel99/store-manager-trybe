@@ -13,4 +13,9 @@ module.exports.productService = {
     if (!result.length) return null;
     return result;
   },
+  deleteProduct: async (productId) => {
+    const result = await productModel.deleteProduct(productId);
+    if (result === 0) return null;
+    return 204;
+  },
 };
