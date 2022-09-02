@@ -10,6 +10,9 @@ product_id AS productId, quantity
 FROM StoreManager.sales_products
 INNER JOIN StoreManager.sales ON sale_id=StoreManager.sales.id WHERE id = ?;`;
 
+const deleteSaleQuery = `DELETE FROM 
+StoreManager.sales WHERE id = ?`;
+
 const saleModel = {
   // ::DONE pegar todas as vendas
   getSales: async () => {
@@ -20,6 +23,10 @@ const saleModel = {
   getSaleById: async (saleId) => {
     const [result] = await connection.execute(selectSaleByIdQuery, [saleId]);
     return result;
+  },
+  deleteSale: async (saleId) => {
+    const [result] = await connection.execute(deleteSaleQuery, [saleId]);
+    return result.affectedRows;
   },
 };
 
