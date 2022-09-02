@@ -12,4 +12,12 @@ module.exports.saleController = {
     if (result === null) return res.status(404).json({ message: 'Sale not found' });
     return res.status(200).json(result);
   },
+  deleteSale: async (req, res) => {
+    const { id } = req.params;
+
+    const result = await saleService.deleteSale(id);
+
+    if (result === null) return res.status(404).json({ message: 'Sale not found' });
+    return res.status(204).send();
+  },
 };
