@@ -51,6 +51,8 @@ describe('Testes da camada controllers', () => {
 
         response.status = Sinon.stub().returns(response);
         response.json = Sinon.stub().returns();
+        const resultExecute = [expectedProduct];
+        Sinon.stub(productService, 'getProductByID').resolves(resultExecute);
 
         await productController.getProductByID(request, response);
 
@@ -85,7 +87,23 @@ describe('Testes da camada controllers', () => {
         expect(response.json.calledWith(expectedProducts)).to.be.true;
 
       });
-    })
+    });
+    describe('Teste da função deleteProduct', () => {
+      it('Deve retornar o status 204 caso o produto seja deletado', async () => {
+        const request = { params: { id: 1 } };
+        const response = {};
+
+        response.status = Sinon.stub().returns(response);
+        response.json = Sinon.stub().returns();
+        response.send = Sinon.stub().returns();
+
+        Sinon.stub(productService, 'deleteProduct').resolves(204);
+
+        await productController.deleteProduct(request, response);
+
+        expect(response.status.calledWith(204)).to.be.true;
+      });
+    });
   })
   // ::TODO testes malsucedidos
   describe('Testes malsucedidos', () => {
@@ -145,6 +163,19 @@ describe('Testes da camada controllers', () => {
         expect(response.json.calledWith({ message: 'Product not found' })).to.be.true;
       });
     });
-    
+    describe('Teste da função deleteProduct', () => {
+      it('Deve retornar o status 404 caso o produto seja encontrado', async () => {
+        const request = { params: { id: 100 } };
+        const response = {};
+
+        response.status = Sinon.stub().returns(response);
+        response.json = Sinon.stub().returns();
+        Sinon.stub(productService, 'deleteProduct').resolves(null);
+
+        await productController.deleteProduct(request, response);
+
+        expect(response.status.calledWith(404)).to.be.true;
+      });
+    });
   });
 });
