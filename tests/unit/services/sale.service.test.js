@@ -64,7 +64,17 @@ describe('Testes da camada services [Sales]', () => {
         const result = await saleService.getSaleById(1);
         expect(result).to.be.equal(expectedSaleId1);
       });
-    })
+    });
+    describe('Teste da função deleteSale', () => {
+      // ::DONE testa se o retorno é null
+      it('Deve testar se o retorno 204', async () => {
+        Sinon.stub(saleModel, 'deleteSale').resolves(1);
+
+        const result = await saleService.deleteSale(1);
+
+        expect(result).to.be.equal(204);
+      });
+    });
   })
   // ::TODO testes malsucedidos
   describe('Testes malsucedidos', () => {
@@ -86,6 +96,16 @@ describe('Testes da camada services [Sales]', () => {
         Sinon.stub(saleModel, 'getSaleById').resolves([]);
 
         const result = await saleService.getSaleById(100);
+
+        expect(result).to.be.equal(null);
+      });
+    });
+    describe('Teste da função deleteSale', () => {
+      // ::DONE testa se o retorno é null
+      it('Deve testar se o retorno null', async () => {
+        Sinon.stub(saleModel, 'deleteSale').resolves(0);
+
+        const result = await saleService.deleteSale(100);
 
         expect(result).to.be.equal(null);
       });
