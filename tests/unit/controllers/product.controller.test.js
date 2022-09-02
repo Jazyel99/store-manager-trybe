@@ -54,7 +54,7 @@ describe('Testes da camada controllers', () => {
 
         await productController.getProductByID(request, response);
 
-        expect(response.json.calledWith([expectedProduct])).to.be.true;
+        expect(response.json.calledWith(expectedProduct)).to.be.true;
       });
     });
     // ::DONE tetes da função getProducts
