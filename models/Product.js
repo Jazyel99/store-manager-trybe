@@ -6,6 +6,9 @@ StoreManager.products WHERE id=?`;
 const selectAllProductsQuery = `SELECT * FROM 
 StoreManager.products`;
 
+const deleteProductQuery = `DELETE FROM 
+StoreManager.products WHERE id = ?`;
+
 const productModel = {
   // ::DONE pegar produto pelo ID
   getProductByID: async (productID) => {
@@ -16,6 +19,10 @@ const productModel = {
   getProducts: async () => {
     const [result] = await connection.execute(selectAllProductsQuery);
     return result;
+  },
+  deleteProduct: async (productId) => {
+    const [result] = await connection.execute(deleteProductQuery, [productId]);
+    return result.affectedRows;
   },
 };
 
