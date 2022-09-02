@@ -9,6 +9,9 @@ StoreManager.products`;
 const deleteProductQuery = `DELETE FROM 
 StoreManager.products WHERE id = ?`;
 
+const createProductQuery = `INSERT INTO StoreManager.products 
+(name) VALUES (?)`;
+
 const productModel = {
   // ::DONE pegar produto pelo ID
   getProductByID: async (productID) => {
@@ -23,6 +26,11 @@ const productModel = {
   deleteProduct: async (productId) => {
     const [result] = await connection.execute(deleteProductQuery, [productId]);
     return result.affectedRows;
+  },
+  addProduct: async (productName) => {
+    const [result] = await connection.execute(createProductQuery, [productName]);
+
+    return { id: result.insertId, name: productName };
   },
 };
 
