@@ -13,4 +13,9 @@ module.exports.saleService = {
     if (!result.length) return null;
     return result;
   },
+  deleteSale: async (saleId) => {
+    const result = await saleModel.deleteSale(saleId);
+    if (result === 0) return null;
+    return 204;
+  },
 };
