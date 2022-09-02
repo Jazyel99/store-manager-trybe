@@ -72,6 +72,13 @@ describe('Testes da camada models [Sales] ', () => {
         expect(result[0]).have.all.keys('date', 'productId', 'quantity');
       })
     });
+    describe('Teste da função deleteSale', () => {
+      it('Deve retornar 1 para venda encontrado', async () => {
+        Sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
+        const result = await saleModel.deleteSale(1);
+        expect(result).to.be.equal(1);
+      });
+    });
   })
   // ::TODO testes malsucedidos
   describe('Testes malsucedidos', () => {
@@ -92,6 +99,13 @@ describe('Testes da camada models [Sales] ', () => {
         const result = await saleModel.getSaleById(100);
         expect(result).to.be.empty;
       });
-    })
+    });
+    describe('Teste da função deleteSale', () => {
+      it('Deve retornar 0 para venda não encontrado', async () => {
+        Sinon.stub(connection, 'execute').resolves([{ affectedRows: 0 }]);
+        const result = await saleModel.deleteSale(100);
+        expect(result).to.be.equal(0);
+      });
+    });
   });
 });
